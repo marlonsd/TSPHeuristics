@@ -1,6 +1,7 @@
 import argparse, math, sys
 
 from time import time
+from graph import Graph
 
 import glob
 
@@ -42,5 +43,7 @@ if (__name__ == '__main__'):
 			point = point.split() # Separete line by space
 
 			points.append([float(point[-2]), float(point[-1])])
+
+		graph = Graph(points=points, size=size, edge=edge_type)
 
 		f.close()

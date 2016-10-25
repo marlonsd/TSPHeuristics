@@ -3,6 +3,8 @@ import argparse, math, sys, glob
 from time import time
 from graph import Graph
 
+from constructive_heuristics import christofides
+
 
 if (__name__ == '__main__'):
 
@@ -21,7 +23,7 @@ if (__name__ == '__main__'):
 	path = args.folder_path
 	file_format = args.file_format
 
-	files = glob.glob(path+"/*."+file_format)
+	files = sorted(glob.glob(path+"/*."+file_format))
 
 	for file in files:
 		f = open(file, 'r')
@@ -43,5 +45,9 @@ if (__name__ == '__main__'):
 			points.append([float(point[-2]), float(point[-1])])
 
 		graph = Graph(points=points, size=size, edge=edge_type)
+
+		cost, _ = christofides(graph)
+
+		print problem_name+','+str(cost)
 
 		f.close()

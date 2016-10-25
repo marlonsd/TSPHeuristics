@@ -1,8 +1,8 @@
 import math, sys
-
 import numpy as np
 
 from mpmath import nint
+from scipy.sparse.csgraph import minimum_spanning_tree
 
 class Graph:
 
@@ -68,3 +68,17 @@ class Graph:
 			return None
 
 		return self.__matrix[i][j]
+
+	def mst(self):
+		temp_matrix = self.__matrix.copy()
+
+		for i in range(self.__size):
+			for j in range(self.__size):
+				if i >= j:
+					temp_matrix[i][j] = 0
+
+		mst = minimum_spanning_tree(temp_matrix)
+
+		mst = mst.toarray().astype(int)
+
+		return mst

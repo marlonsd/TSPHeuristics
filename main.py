@@ -1,9 +1,7 @@
-import argparse, math, sys
+import argparse, math, sys, glob
 
 from time import time
 from graph import Graph
-
-import glob
 
 
 if (__name__ == '__main__'):

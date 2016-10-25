@@ -6,17 +6,21 @@ from mpmath import nint
 
 class Graph:
 
-	def __init__(self, points, size, edge):
-		self.matrix = np.zeros((size, size))
+	def __init__(self, points, size = 0, edge = 'EUC_2D'):
+		self.__matrix = np.zeros((size, size))
+		self.__size = len(points)
 
 		for i,a in enumerate(points):
 			for j,b in enumerate(points):
-				if self.matrix[i][j] == 0.0:
-					dist = self.distance(a,b,edge)
-					self.matrix[i][j] = dist
-					self.matrix[j][i] = dist
+				if self.__matrix[i][j] == 0.0:
+					dist = self.__distance(a,b,edge)
+					if dist is None:
+						self.__size = 0
+						break
+					self.__matrix[i][j] = dist
+					self.__matrix[j][i] = dist
 
-	def distance(self, a, b, type):
+	def __distance(self, a, b, type):
 
 		if a == b:
 			return 0
@@ -24,7 +28,7 @@ class Graph:
 		xd = a[0] - b[0]
 		yd = a[1] - b[1]
 
-		dij = -1
+		dij = None
 
 		if type == "EUC_2D":
 			"""
@@ -55,3 +59,12 @@ class Graph:
 					dij = tij
 
 		return dij
+
+	def size(self):
+		return self.__size
+
+	def get_distance(self, i, j):
+		if i > self.__size or j > self.__size:
+			return None
+
+		return self.__matrix[i][j]

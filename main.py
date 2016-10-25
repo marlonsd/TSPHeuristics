@@ -25,7 +25,6 @@ if (__name__ == '__main__'):
 	files = glob.glob(path+"/*."+file_format)
 
 	for file in files:
-		print file		
 		f = open(file, 'r')
 
 		data = f.read().splitlines()
@@ -39,8 +38,9 @@ if (__name__ == '__main__'):
 		points = []
 
 		for i in range(size):
-			point = " ".join(data[i].strip().split()).split()
-			points.append([float(point[-2]), float(point[-1])])
+			point = " ".join(data[i].strip().split()) # Remove duplicate spaces in between line
+			point = point.split() # Separete line by space
 
+			points.append([float(point[-2]), float(point[-1])])
 
 		f.close()

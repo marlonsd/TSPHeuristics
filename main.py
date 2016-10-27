@@ -5,8 +5,7 @@ from graph import Graph
 
 import numpy as np
 
-from constructive_heuristics import christofides, nearest_neighbour_algorithm
-
+from constructive_heuristics import nearest_neighbour_algorithm
 
 if (__name__ == '__main__'):
 
@@ -51,6 +50,8 @@ if (__name__ == '__main__'):
 		graph = Graph(points=points, size=size, edge=edge_type)
 
 		cost, temp = nearest_neighbour_algorithm(graph)
+		# cost, temp = compute(graph.triangular_sup_matrix())
+
 		print problem_name + "," + str(graph.size()) + "," + str(cost) + "," + str(len(np.unique(temp)))
 		# print problem_name + "," + str(graph.size()) + "," + str(temp['Travel_Cost']) + "," + str(len(np.unique(temp)))
 

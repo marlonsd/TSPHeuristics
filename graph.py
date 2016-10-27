@@ -75,6 +75,16 @@ class Graph:
 
 		return out
 
+	def triangular_sup_matrix(self):
+		temp_matrix = self.__matrix.copy()
+
+		for i in range(self.__size):
+			for j in range(self.__size):
+				if i >= j:
+					temp_matrix[i][j] = 0.0
+
+		return temp_matrix
+
 
 	def size(self):
 		return self.__size

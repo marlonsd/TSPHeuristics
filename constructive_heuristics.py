@@ -43,6 +43,8 @@ def find_euler_tour(graph):
 def christofides(graph):
 	mst = graph.mst()
 
+	odd_vertices = odd_vertices(mst, graph.size())
+
 	vertice_list = []
 
 	# Duplicating edges
@@ -55,8 +57,14 @@ def christofides(graph):
 	tour = find_euler_tour(vertice_list)
 
 	cost = 0.
+
+	visited = []
+	for i in range(graph.size()):
+		visited.append(0)
+
 	for i in range(len(tour)-1):
-		cost += graph.get_distance(tour[i], tour[i+1])
+		if not visited[tour[i+1]]:
+			cost += graph.get_distance(tour[i], tour[i+1])
 
 	return cost, tour
 
@@ -70,7 +78,7 @@ def nearest_neighbour_algorithm(graph):
 
 	current = points[0]
 	tour = [current]
-	
+
 	points.remove(current)
 
 	while len(points) > 0:

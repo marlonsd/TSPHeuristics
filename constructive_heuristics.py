@@ -59,3 +59,31 @@ def christofides(graph):
 		cost += graph.get_distance(tour[i], tour[i+1])
 
 	return cost, tour
+
+
+
+def nearest_neighbour_algorithm(graph):
+	if graph.size == 0:
+		return []
+
+	points = range(graph.size())
+
+	current = points[0]
+	tour = [current]
+	
+	points.remove(current)
+
+	while len(points) > 0:
+		next = points[0]
+		for point in points:
+			if graph.get_distance(current, point) < graph.get_distance(current, next):
+				next = point      
+		tour.append(next)
+		points.remove(next)
+		current = next
+
+	cost = 0
+	for i in range(len(tour)-1):
+		cost += graph.get_distance(tour[i], tour[i+1])
+
+	return cost, tour

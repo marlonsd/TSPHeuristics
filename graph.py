@@ -4,6 +4,7 @@ import numpy as np
 from mpmath import nint
 from scipy.sparse.csgraph import minimum_spanning_tree
 
+
 class Graph:
 
 	def __init__(self, points, size = 0, edge = 'EUC_2D'):
@@ -60,6 +61,21 @@ class Graph:
 
 		return dij
 
+	def __repr__(self):
+		return "<Graph size:%s matrix:%s>" % (self.__size, self.__matrix)
+
+	def __str__(self):
+		out = ""
+
+		for line in self.__matrix:
+			for i in line:
+				out+=(str(i)+'\t')
+			out+="\n"
+		out+="\n"
+
+		return out
+
+
 	def size(self):
 		return self.__size
 
@@ -82,3 +98,4 @@ class Graph:
 		mst = mst.toarray().astype(int)
 
 		return mst
+

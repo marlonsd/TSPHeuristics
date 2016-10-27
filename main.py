@@ -3,7 +3,9 @@ import argparse, math, sys, glob
 from time import time
 from graph import Graph
 
-from constructive_heuristics import christofides
+import numpy as np
+
+from constructive_heuristics import christofides, nearest_neighbour_algorithm
 
 
 if (__name__ == '__main__'):
@@ -24,6 +26,8 @@ if (__name__ == '__main__'):
 	file_format = args.file_format
 
 	files = sorted(glob.glob(path+"/*."+file_format))
+
+	print "name,size,cost,size cost"
 
 	for file in files:
 		f = open(file, 'r')
@@ -46,8 +50,8 @@ if (__name__ == '__main__'):
 
 		graph = Graph(points=points, size=size, edge=edge_type)
 
-		cost, _ = christofides(graph)
-
-		print problem_name+','+str(cost)
+		cost, temp = nearest_neighbour_algorithm(graph)
+		print problem_name + "," + str(graph.size()) + "," + str(cost) + "," + str(len(np.unique(temp)))
+		# print problem_name + "," + str(graph.size()) + "," + str(temp['Travel_Cost']) + "," + str(len(np.unique(temp)))
 
 		f.close()

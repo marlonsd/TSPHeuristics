@@ -2,3 +2,5 @@ EUC_2D/
 *.pyc
 *.txt
 *.out
+*.csv
+.DS_STORE

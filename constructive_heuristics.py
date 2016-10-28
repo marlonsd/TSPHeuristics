@@ -3,76 +3,9 @@ import numpy as np
 
 from collections import defaultdict
 
-# https://github.com/feynmanliang/Euler-Tour/blob/master/FindEulerTour.py
-def find_euler_tour(graph):
-	tour = []
-	E = graph
-
-	numEdges = defaultdict(int)
-
-	def find_tour(u):
-		for e in E:
-			if u == e[0]:
-				u,v = e
-				E.remove(e)
-				find_tour(v)
-			elif u == e[1]:
-				v,u = e
-				E.remove(e)
-				find_tour(v)
-		tour.insert(0,u)
-
-	for i,j in graph:
-		numEdges[i] += 1
-		numEdges[j] += 1
-
-	start = graph[0][0]
-	for i,j in numEdges.iteritems():
-		if j % 2 > 0:
-			start = i
-			break
-
-	current = start
-	find_tour(current)
-
-	if tour[0] != tour[-1]:
-		return None
-	return tour
-
-# https://web.tuke.sk/fei-cit/butka/hop/htsp.pdf
-def christofides(graph):
-	mst = graph.mst()
-
-	odd_vertices = odd_vertices(mst, graph.size())
-
-	vertice_list = []
-
-	# Duplicating edges
-	for i in range(len(mst)):
-		for j in range(len(mst)):
-			if (mst[i][j] > 0):
-				vertice_list += [(i,j)]
-				vertice_list += [(i,j)]
-
-	tour = find_euler_tour(vertice_list)
-
-	cost = 0.
-
-	visited = []
-	for i in range(graph.size()):
-		visited.append(0)
-
-	for i in range(len(tour)-1):
-		if not visited[tour[i+1]]:
-			cost += graph.get_distance(tour[i], tour[i+1])
-
-	return cost, tour
-
-
-
 def nearest_neighbour_algorithm(graph):
 	if graph.size == 0:
-		return []
+		return -1, []
 
 	points = range(graph.size())
 
@@ -94,4 +27,73 @@ def nearest_neighbour_algorithm(graph):
 	for i in range(len(tour)-1):
 		cost += graph.get_distance(tour[i], tour[i+1])
 
+	# cost += graph.get_distance(tour[i+1], tour[0])
+
 	return cost, tour
+
+
+def nearthest_insertion_algorithm(graph):
+	if graph.size == 0:
+		return -1, []
+
+	points = range(graph.size())
+
+	current = points[0]
+
+	points.remove(current)
+
+	i = current
+	j = points[0]
+	cij = graph.get_distance(i,j)
+	for point in points:
+		if graph.get_distance(i, point) < cij:
+			cij = graph.get_distance(i, point)
+			j = point
+
+	points.remove(j)
+	
+	edges = [(i,j)]
+
+	visited = []
+	visited.append(i)
+	visited.append(j)
+
+	while len(points) > 0:
+		i = visited[0]
+		k = points[0]
+		crj = graph.get_distance(k,i)
+
+		for point in points:
+			for c in visited:
+				dist = graph.get_distance(point,c)
+				if dist < crj:
+					k = point
+
+		i = edges[0][0]
+		j = edges[0][1]
+		c_min = graph.get_distance(i,k) + graph.get_distance(k,j) - graph.get_distance(i,j)
+
+		for e in edges:
+			aux_i = e[0]
+			aux_j = e[1]
+			dist = graph.get_distance(aux_i,k) + graph.get_distance(k,aux_j) - graph.get_distance(aux_i,aux_j)
+			if dist < c_min:
+				c_min = dist
+				i = aux_i
+				j = aux_j
+
+		edges.remove((i,j))
+		edges.append((i,k))
+		edges.append((k,j))
+
+		visited.append(k)
+		points.remove(k)
+
+
+	cost = 0
+	for e in edges:
+		i = e[0]
+		j = e[1]
+		cost += graph.get_distance(i, j)
+
+	return cost, edges

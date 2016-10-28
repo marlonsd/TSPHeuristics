@@ -5,7 +5,7 @@ from graph import Graph
 
 import numpy as np
 
-from constructive_heuristics import nearest_neighbour_algorithm
+from constructive_heuristics import nearest_neighbour_algorithm, nearthest_insertion_algorithm
 
 if (__name__ == '__main__'):
 
@@ -26,7 +26,7 @@ if (__name__ == '__main__'):
 
 	files = sorted(glob.glob(path+"/*."+file_format))
 
-	print "name,size,cost,size cost"
+	print "name,size,nn cost,nn time,insertion cost, insertion time"
 
 	for file in files:
 		f = open(file, 'r')
@@ -49,10 +49,16 @@ if (__name__ == '__main__'):
 
 		graph = Graph(points=points, size=size, edge=edge_type)
 
-		cost, temp = nearest_neighbour_algorithm(graph)
+		t0 = time()
+		cost_nn, temp = nearest_neighbour_algorithm(graph)
+		nn_time = time()-t0
+
+		t0 = time()
+		cost_i, temp = nearthest_insertion_algorithm(graph)
+		it_time = time()-t0
 		# cost, temp = compute(graph.triangular_sup_matrix())
 
-		print problem_name + "," + str(graph.size()) + "," + str(cost) + "," + str(len(np.unique(temp)))
+		print problem_name + "," + str(graph.size()) + "," + str(cost_nn) + "," + str(nn_time) + "," + str(cost_i) + "," + str(it_time)
 		# print problem_name + "," + str(graph.size()) + "," + str(temp['Travel_Cost']) + "," + str(len(np.unique(temp)))
 
 		f.close()

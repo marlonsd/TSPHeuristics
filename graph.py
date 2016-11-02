@@ -90,7 +90,7 @@ class Graph:
 		return self.__size
 
 	def get_distance(self, i, j):
-		if i > self.__size or j > self.__size:
+		if i >= self.__size or j >= self.__size:
 			return None
 
 		return self.__matrix[i][j]
@@ -108,4 +108,19 @@ class Graph:
 		mst = mst.toarray().astype(int)
 
 		return mst
+
+	def remove_node(self,i):
+		if i >= self.__size:
+			return None
+
+		self.__matrix = np.delete(self.__matrix,i,1)
+		self.__matrix = np.delete(self.__matrix,i,0)
+
+		self.__size -= 1
+
+	def get_matrix(self):
+		return self.__matrix.copy()
+
+	def set_distance(self, v, i,j):
+		self.__matrix[i][j] = v
 

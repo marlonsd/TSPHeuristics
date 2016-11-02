@@ -6,6 +6,7 @@ from graph import Graph
 import numpy as np
 
 from constructive_heuristics import nearest_neighbour_algorithm, nearthest_insertion_algorithm
+from lower_bound import one_tree, held_karp_bound, minimum_spanning_tree
 
 if (__name__ == '__main__'):
 
@@ -26,7 +27,7 @@ if (__name__ == '__main__'):
 
 	files = sorted(glob.glob(path+"/*."+file_format))
 
-	print "name,size,nn cost,nn time,insertion cost, insertion time"
+	print "name,size,nn cost,nn time,insertion cost, insertion time, one_tree lower bound, held_karp_bound lower bound"
 
 	for file in files:
 		f = open(file, 'r')
@@ -58,7 +59,11 @@ if (__name__ == '__main__'):
 		it_time = time()-t0
 		# cost, temp = compute(graph.triangular_sup_matrix())
 
-		print problem_name + "," + str(graph.size()) + "," + str(cost_nn) + "," + str(nn_time) + "," + str(cost_i) + "," + str(it_time)
+		lb, _, _ = one_tree(graph)
+		lb2 = held_karp_bound(graph)
+
+		print problem_name + "," + str(graph.size()) + "," + str(cost_nn) + "," + str(nn_time) + "," + str(cost_i) + "," + str(it_time),
+		print str(lb)+","+str(lb2)
 		# print problem_name + "," + str(graph.size()) + "," + str(temp['Travel_Cost']) + "," + str(len(np.unique(temp)))
 
 		f.close()

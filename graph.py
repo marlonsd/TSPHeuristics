@@ -124,3 +124,13 @@ class Graph:
 	def set_distance(self, v, i,j):
 		self.__matrix[i][j] = v
 
+	def is_complete(self):
+		condition = True
+
+		for i in range(self.__size):
+			for j in range(self.__size):
+				if (i != j):
+					condition = condition and (self.__matrix[i][j] != 0)
+
+		return condition
+

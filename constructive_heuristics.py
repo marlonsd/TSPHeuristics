@@ -23,6 +23,8 @@ def nearest_neighbour_algorithm(graph):
 		points.remove(next)
 		current = next
 
+	tour.append(tour[0])
+
 	cost = 0
 	for i in range(len(tour)-1):
 		cost += graph.get_distance(tour[i], tour[i+1])
@@ -97,3 +99,41 @@ def nearthest_insertion_algorithm(graph):
 		cost += graph.get_distance(i, j)
 
 	return cost, edges
+
+def greedy(graph, initial_point = 0):
+	if graph.size == 0:
+		return -1, []
+
+	tour = [initial_point]
+	cost = 0.
+	local_point = initial_point
+
+	possible_cities = range(graph.size())
+
+	possible_cities.remove(local_point)
+
+	while(len(possible_cities) > 0):
+		smallest = graph.get_distance(local_point,possible_cities[0])
+		city = possible_cities[0]
+
+		for i in possible_cities:
+			value = graph.get_distance(local_point,i)
+
+			if value < smallest:
+				smallest = value
+				city = i
+
+		if not (city is None):
+			tour.append(city)
+			local_point = city
+			cost += smallest
+			possible_cities.remove(local_point)
+		else:
+			print "Something is not quite right!"
+			print "An illusion?! What are you hiding?"
+			sys.exit()
+
+	cost += graph.get_distance(tour[-1],tour[0])
+	tour.append(initial_point)
+
+	return cost, tour

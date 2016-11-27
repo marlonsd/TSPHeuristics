@@ -125,3 +125,12 @@ def hill_climbing_first_fitting(graph, initial_solution = None):
 	return min_cost, tour
 
 
+def two_opt(tour):
+	pos1 = 1 + random.randint(0, math.floor(len(tour) / 4))
+	pos2 = pos1 + 1 + random.randint(0, math.floor(len(tour) / 4))
+	pos3 = pos2 + 1 + random.randint(0, math.floor(len(tour) / 4))
+	p1 = tour[0:pos1] + tour[pos3:len(tour)]
+	p2 = tour[pos2:pos3] + tour[pos1:pos2]
+	return p1 + p2
+
+	

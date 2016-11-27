@@ -13,11 +13,11 @@ if (__name__ == '__main__'):
 	### Arguments Treatment ###
 	parser = argparse.ArgumentParser()
 
-	parser.add_argument("-p","--folder_path", type=str, default='EUC_2D',
-						help="Folder where TSP instances are located (Default: EUC_2D).")
+	parser.add_argument("-p","--folder_path", type=str, default='instances',
+						help="Folder where TSP instances are located (Default: instances).")
 
-	parser.add_argument("-f","--file_format", type=str, default='tsp',
-						help="Format of file where TSP instances are stored (Default: tsp).")
+	parser.add_argument("-f","--file_format", type=str, default='txt',
+						help="Format of file where TSP instances are stored (Default: txt).")
 
 	# Parsing args
 	args = parser.parse_args()
@@ -27,18 +27,16 @@ if (__name__ == '__main__'):
 
 	files = sorted(glob.glob(path+"/*."+file_format))
 
-
 	for file in files:
 		f = open(file, 'r')
 
 		data = f.read().splitlines()
 
 		problem_name = file.split(".")[0]
-		
-		size = int(data[3].split(" ")[-1])
+		size = int(data[0].split(" ")[-1])
 		edge_type = data[4].split(" ")[-1]
 
-		data = data[6:]
+		data = data[2:]
 
 		points = []
 

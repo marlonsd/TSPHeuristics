@@ -7,6 +7,8 @@ import numpy as np
 
 from local_search import hill_climbing_best_fitting, hill_climbing_first_fitting
 
+from metaheuristics import grasp, iterated_local_search
+
 if (__name__ == '__main__'):
 
 	### Arguments Treatment ###
@@ -26,7 +28,7 @@ if (__name__ == '__main__'):
 
 	files = sorted(glob.glob(path+"/*."+file_format))
 
-	print "name,size,hcbf cost,hcbf time,hcff cost, hcff time"
+	print "name,size,hcbf cost,hcbf time,hcff cost, hcff time, grasp cost, grasp time, grasp iteration, ils cost, ils time, ils iteration"
 
 	for file in files:
 		f = open(file, 'r')
@@ -57,9 +59,16 @@ if (__name__ == '__main__'):
 		cost_hcff, temp = hill_climbing_first_fitting(graph)
 		hcff_time = time()-t0
 
-		print problem_name + "," + str(graph.size()) + "," + str(cost_hcbf) + "," + str(hcbf_time) + "," + str(cost_hcff) + "," + str(hcff_time)
+		t0 = time()
+		cost_grasp, temp, it_grasp = iterated_local_search(graph)
+		grasp_time = time()-t0
 
-		# print prflem_name + "," + str(graph.size()) + "," + str(cost_nn) + "," + str(nn_time) + "," + str(cost_i) + "," + str(it_time),
-		# print str(lb)+","+str(lb2)
+		t0 = time()
+		cost_ils, temp, it_ils = iterated_local_search(graph)
+		ils_time = time()-t0
+
+		print problem_name + "," + str(graph.size()) + "," + str(cost_hcbf) + "," + str(hcbf_time) + "," + str(cost_hcff) + "," + str(hcff_time),
+		print "," + str(cost_grasp) + "," + str(grasp_time) + "," + str(it_grasp),
+		print "," + str(cost_ils) + "," + str(ils_time) + "," + str(it_ils),
 
 		f.close()
